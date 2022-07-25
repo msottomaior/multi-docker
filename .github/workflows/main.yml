@@ -24,5 +24,18 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+      
+      
+      - run: docker build -t msotto/multi-docker -f ./client/Dockerfile.dev .
+      - run: docker run -e CI=true msotto/multi-docker npm test
+
+      - name: Generate deployment package
+        run: zip -r deploy.zip . -x '*.git*'
+        
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: multi-docker
+          path: ./deploy.zip
 
       
