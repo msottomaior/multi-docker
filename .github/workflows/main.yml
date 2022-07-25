@@ -55,10 +55,10 @@ jobs:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASS }}
       
-      - run: docker push -t msotto/multi-client
-      - run: docker push -t msotto/multi-nginx 
-      - run: docker push -t msotto/multi-server 
-      - run: docker push -t msotto/multi-worker
+      - run: docker push msotto/multi-client
+      - run: docker push msotto/multi-nginx 
+      - run: docker push msotto/multi-server 
+      - run: docker push msotto/multi-worker
       
       # - name: Extract metadata (tags, labels) for Docker
       #   id: meta
