@@ -44,6 +44,11 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
+
+      - run: docker build -t msotto/multi-client -f ./client
+      - run: docker build -t msotto/multi-nginx 
+      - run: docker build -t msotto/multi-server 
+      - run: docker build -t msotto/multi-worker
       
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -51,18 +56,23 @@ jobs:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASS }}
       
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: msotto/multi-docker
+      - run: docker push -t msotto/multi-client
+      - run: docker push -t msotto/multi-nginx 
+      - run: docker push -t msotto/multi-server 
+      - run: docker push -t msotto/multi-worker
       
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+      # - name: Extract metadata (tags, labels) for Docker
+      #   id: meta
+      #   uses: docker/metadata-action@v4
+      #   with:
+      #     images: msotto/multi-docker
+      
+      # - name: Build and push Docker image
+      #   uses: docker/build-push-action@v3
+      #   with:
+      #     context: .
+      #     push: true
+      #     tags: ${{ steps.meta.outputs.tags }}
+      #     labels: ${{ steps.meta.outputs.labels }}
 
       
