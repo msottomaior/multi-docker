@@ -25,41 +25,18 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       
-      
       - run: docker build -t msotto/multi-docker -f ./client/Dockerfile.dev ./client
       - run: docker run -e CI=true msotto/multi-docker npm test
 
       - name: Generate deployment package
         run: zip -r deploy.zip . -x '*.git*'
       
-      - run: docker build -t msotto/multi-client ./client
-      - run: docker build -t msotto/multi-nginx ./nginx
-      - run: docker build -t msotto/multi-server ./server
-      - run: docker build -t msotto/multi-worker ./worker
-
       - uses: actions/upload-artifact@v3
         with:
           name: multi-docker
           path: ./deploy.zip
 
-  push_to_registry:
-    name: Push Docker image to Docker Hub
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v3
-      
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_PASS }}
-      
-      - run: docker push msotto/multi-client
-      - run: docker push msotto/multi-nginx 
-      - run: docker push msotto/multi-server 
-      - run: docker push msotto/multi-worker
-      
+  
       # - name: Extract metadata (tags, labels) for Docker
       #   id: meta
       #   uses: docker/metadata-action@v4
