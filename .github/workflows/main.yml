@@ -31,7 +31,11 @@ jobs:
 
       - name: Generate deployment package
         run: zip -r deploy.zip . -x '*.git*'
-        
+      
+      - run: docker build -t msotto/multi-client ./client
+      - run: docker build -t msotto/multi-nginx ./nginx
+      - run: docker build -t msotto/multi-server ./server
+      - run: docker build -t msotto/multi-worker ./worker
 
       - uses: actions/upload-artifact@v3
         with:
@@ -44,11 +48,6 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
-
-      - run: docker build -t msotto/multi-client ./client
-      - run: docker build -t msotto/multi-nginx ./nginx
-      - run: docker build -t msotto/multi-server ./server
-      - run: docker build -t msotto/multi-worker ./worker
       
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -56,10 +55,10 @@ jobs:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASS }}
       
-      - run: docker push -t msotto/multi-client
-      - run: docker push -t msotto/multi-nginx 
-      - run: docker push -t msotto/multi-server 
-      - run: docker push -t msotto/multi-worker
+      - run: docker push msotto/multi-client
+      - run: docker push msotto/multi-nginx 
+      - run: docker push msotto/multi-server 
+      - run: docker push msotto/multi-worker
       
       # - name: Extract metadata (tags, labels) for Docker
       #   id: meta
