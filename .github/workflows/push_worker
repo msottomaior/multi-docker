@@ -29,4 +29,4 @@ jobs:
           context: ./worker
           file: ./worker/Dockerfile
           push: true
-          tags: msotto/multi-client:latest
+          tags: msotto/multi-worker:latest
