@@ -10,9 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-        with:
-          path: ./client
+      # - uses: actions/checkout@v3
+      #   with:
+      #     path: ./client
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -26,7 +26,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: "{{defaultContext}}:client"
+          context: "./client"
           file: ./client/Dockerfile
           push: true
           tags: msotto/multi-client:latest
